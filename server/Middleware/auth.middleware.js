@@ -1,4 +1,4 @@
-import User from '../models/User.model.js';
+import User from '../Model/User.js';
 import {verifyToken} from '../lib/jwt.js';
 
 export const protectedRoute = async (req, res, next) => {

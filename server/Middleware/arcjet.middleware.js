@@ -1,4 +1,4 @@
-import { aj } from "../lib/arcjet";
+import { aj } from "../lib/arcjet.js";
 
 
 export const arcjetProtection = async (req, res, next) => {
@@ -9,12 +9,14 @@ export const arcjetProtection = async (req, res, next) => {
         }
         if (decision.reason.isBot) {
             return res.status(403).json({ message: "Bot traffic blocked" });
-        } else{
-            return res.status(403).json({ message: "Request blocked by Arcjet" });
-        }
+        } 
         if(decision.reason.isSpoofedBot){
             return res.status(403).json({ message: "Spoofed bot traffic blocked" });
         }
+        else{
+            return res.status(403).json({ message: "Request blocked by Arcjet" });
+        }
+        
         next();
     } catch (error) {
         console.error("Error in Arcjet protection middleware:", error);

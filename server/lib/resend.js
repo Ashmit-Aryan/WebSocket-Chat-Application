@@ -1,9 +1,8 @@
 import { Resend } from "resend";
-import { ENV } from "./env.js";
 
-export const resendClient = new Resend(ENV.RESEND_API_KEY);
+export const resendClient = new Resend("re_8UYuRqDY_HAVTFB8xdYZuYxWUNh8hQ486");
 
 export const sender = {
-  email: ENV.EMAIL_FROM,
-  name: ENV.EMAIL_FROM_NAME,
+  email: process.env.RESEND_FROM_EMAIL || "noreply@chit-chat.com",
+  name: process.env.RESEND_FROM_NAME || "Chit-Chat Team",
 };
