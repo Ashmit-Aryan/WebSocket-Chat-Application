@@ -11,6 +11,8 @@
     "production": "node index.js"
   },
   "dependencies": {
+    "@arcjet/inspect": "^1.1.0",
+    "@arcjet/node": "^1.1.0",
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.2",
     "cloudinary": "^2.9.0",
