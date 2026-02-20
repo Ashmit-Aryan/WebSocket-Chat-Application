@@ -21,16 +21,24 @@
 
 
 ---
-## Features  
+## Work  
 **Backend**
 - [x] Express Setup
 - [x] Auth Controller
 - [x] Auth Endpoints
 - [x] Rate Limiter
-- [ ] Message Setup
+- [x] Message Setup
+- [ ] Group Chat
+- [ ] Only Added Contacts Chat
 
 **FrontEnd**
-- [ ] None  
+- [ ] Design Frontend
+- [ ] Login Page
+- [ ] Sign up Page
+- [ ] Chat Page
+- [ ] Contacts Page
+- [ ] Adding Contacts
+- [ ] Profile Page
 
 ---
 ## Bugs
