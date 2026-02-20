@@ -1,5 +1,6 @@
 import arcjet, { shield, detectBot, slidingWindow } from "@arcjet/node";
-
+import * as dotenv from "dotenv";
+dotenv.config();
 export const aj = arcjet({
   // Get your site key from https://app.arcjet.com and set it as an environment
   // variable rather than hard coding.

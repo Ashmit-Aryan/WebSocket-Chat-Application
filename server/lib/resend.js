@@ -1,6 +1,8 @@
 import { Resend } from "resend";
 
-export const resendClient = new Resend("re_8UYuRqDY_HAVTFB8xdYZuYxWUNh8hQ486");
+import * as dotenv from "dotenv";
+dotenv.config();
+export const resendClient = new Resend(process.env.RESEND_API_KEY);
 
 export const sender = {
   email: process.env.RESEND_FROM_EMAIL || "noreply@chit-chat.com",

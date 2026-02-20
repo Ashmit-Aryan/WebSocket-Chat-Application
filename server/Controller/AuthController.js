@@ -3,7 +3,8 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/jwt.js";
 import { sendWelcomeEmail } from "../lib/Email/emailHandler.js";
 import cloudinary from "../lib/cloudinary.js";
-
+import * as dotenv from "dotenv";
+dotenv.config();
 
 export async function signup(req, res) {
   const { fullName, username, email, password, profilePicture } = req.body;

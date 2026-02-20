@@ -1,6 +1,9 @@
 import User from "../Model/User.js";
 import Message from "../Model/Message.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 import cloudinary from "../lib/cloudinary.js";
+import * as dotenv from "dotenv";
+dotenv.config();
 export const getAllContacts = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
@@ -35,8 +38,8 @@ export const getMessagesByUserId = async (req, res) => {
 export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
-    const sender = req.user._id;
-    const receiver = req.params.id;
+    const senderId = req.user._id;
+    const receiverId = req.params.id;
 
     if(!text && !image){
       return res.status(400).json({ message: "Message text or image is required" });
@@ -45,7 +48,7 @@ export const sendMessage = async (req, res) => {
       return res.status(400).json({ message: "Cannot send message to yourself" });
     }
 
-    const receiverExists = await User.exists({ _id: receiver });
+    const receiverExists = await User.exists({ _id: receiverId });
     if (!receiverExists) {
       return res.status(404).json({ message: "Receiver not found" });
     }
@@ -61,14 +64,16 @@ export const sendMessage = async (req, res) => {
     }
 
     const newMessage = new Message({
-      sender,
-      receiver,
+      senderId,
+      receiverId,
       text,
       image: imageUrl,
     });
 
-    // todo: Socket - IO Implementation
-    
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
     await newMessage.save();
     res.status(201).json(newMessage);
   } catch (error) {
