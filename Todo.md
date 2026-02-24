@@ -32,11 +32,11 @@
 - [ ] Only Added Contacts Chat
 
 **FrontEnd**
-- [ ] Design Frontend
-- [ ] Login Page
-- [ ] Sign up Page
-- [ ] Chat Page
-- [ ] Contacts Page
+- [x] Design Frontend
+- [x] Login Page
+- [x] Sign up Page
+- [x] Chat Page
+- [x] Contacts Page
 - [ ] Adding Contacts
 - [ ] Profile Page
 
