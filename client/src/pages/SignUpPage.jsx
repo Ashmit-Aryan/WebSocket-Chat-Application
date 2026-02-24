@@ -6,11 +6,11 @@ import { Link } from "react-router";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({ fullName: "", email: "",username:"" ,password: "" });
-  const { signup, isSigningUp } = useAuthStore();
+  const { signUp, isSigningUp } = useAuthStore();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signup(formData);
+    signUp(formData);
   };
 
   return (
