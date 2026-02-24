@@ -1,7 +1,6 @@
 import User from "../Model/User.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/jwt.js";
-import { sendWelcomeEmail } from "../lib/Email/emailHandler.js";
 import cloudinary from "../lib/cloudinary.js";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -50,7 +49,6 @@ export async function signup(req, res) {
     if (newUser) {
       const savedUser = await newUser.save();
       generateToken(savedUser._id, res);
-      await sendWelcomeEmail(savedUser.email, savedUser.fullName, process.env.CLIENT_URL);
       res
         .status(201)
         .json({
