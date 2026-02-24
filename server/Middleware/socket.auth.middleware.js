@@ -6,7 +6,7 @@ export const socketAuthMiddleware = async (socket, next) => {
     try {
         
     const token = socket.handshake.headers.cookie?.split("; ")?.find(row => row.startsWith("token="))?.split("=")[1];
-    console.log("Socket authentication attempt, token found:", socket);
+    // console.log("Socket authentication attempt, token found:", socket);
     if(!token) {
         console.log("Socket authentication failed: No token provided");
         return next(new Error("Authentication error: No token provided"));

@@ -18,20 +18,21 @@ export const getAllContacts = async (req, res) => {
 };
 
 export const getMessagesByUserId = async (req, res) => {
-  try {
-    const loggedInUserId = req.user._id;
-    const otherUserId = req.params.id;
-    // Fetch messages where the logged-in user is either the sender or receiver
+   try {
+    const myId = req.user._id;
+    const { id: userToChatId } = req.params;
+
     const messages = await Message.find({
       $or: [
-        { sender: loggedInUserId, receiver: otherUserId },
-        { sender: otherUserId, receiver: loggedInUserId },
+        { senderId: myId, receiverId: userToChatId },
+        { senderId: userToChatId, receiverId: myId },
       ],
-    }).sort({ createdAt: 1 }); // Sort messages by creation time
+    });
+
     res.status(200).json(messages);
   } catch (error) {
-    console.log("Error fetching messages:", error);
-    res.status(500).json({ error: "Internal Server error" });
+    console.log("Error in getMessages controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -70,11 +71,11 @@ export const sendMessage = async (req, res) => {
       image: imageUrl,
     });
 
+    await newMessage.save();
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
-    await newMessage.save();
     res.status(201).json(newMessage);
   } catch (error) {
     console.error("Error sending message:", error);
@@ -94,8 +95,8 @@ export const getChatPartners = async (req, res) => {
       ...new Set(
         messages.map((msg) =>
           msg.senderId.toString() === loggedInUserId.toString()
-            ? msg.receiverId
-            : msg.senderId,
+            ? msg.receiverId.toString()
+            : msg.senderId.toString(),
         ),
       ),
     ];

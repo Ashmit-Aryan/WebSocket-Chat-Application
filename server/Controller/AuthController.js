@@ -48,17 +48,17 @@ export async function signup(req, res) {
 
   try {
     if (newUser) {
-      await newUser.save();
-      generateToken(newUser._id, res);
-      await sendWelcomeEmail(newUser.email, newUser.fullName, process.env.CLIENT_URL);
-      return res
+      const savedUser = await newUser.save();
+      generateToken(savedUser._id, res);
+      await sendWelcomeEmail(savedUser.email, savedUser.fullName, process.env.CLIENT_URL);
+      res
         .status(201)
         .json({
           message: "User registered successfully",
-          id: newUser._id,
-          username: newUser.username,
-          email: newUser.email,
-          profilePicture: newUser.profilePicture
+          id: savedUser._id,
+          username: savedUser.username,
+          email: savedUser.email,
+          profilePicture: savedUser.profilePicture
         });
     } else {
       return res.status(500).json({ message: "Failed to create user" });
@@ -96,6 +96,7 @@ export async function login(req, res) {
             id: user._id,
             username: user.username,
             email: user.email,
+            fullName: user.fullName,
             profilePicture: user.profilePicture
         });
     } catch (error) {
@@ -115,7 +116,7 @@ export async function logout(req, res) {
 
 export async function updateProfile(req, res) {
   try {
-    const profilePicture = req.body;
+const { profilePicture } = req.body;
     if(!profilePicture){
       return res.status(400).json({ message: "Profile picture is required" });
     }
