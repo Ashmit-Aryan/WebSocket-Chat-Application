@@ -10,7 +10,6 @@ const app = express();
 const server = http.createServer(app);// Debugging line to check the CLIENT_URL value
 const io = new Socket.Server(server, {
     cors: {
-        origin: process.env.CLIENT_URL,
         credentials: true
     }
 });
