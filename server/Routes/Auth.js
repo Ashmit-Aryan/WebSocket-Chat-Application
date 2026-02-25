@@ -11,5 +11,4 @@ router.post('/login', login);
 router.post('/logout', logout);
 router.post('/update-profile', protectedRoute, updateProfile);
 router.get("/check", protectedRoute, (req, res) => res.status(200).json(req.user));
-router.get("/all", async (req, res) => {const allUser = await User.find({}); res.status(200).json(allUser)});
 export default router;
