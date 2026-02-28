@@ -12,7 +12,7 @@ function ProfileHeader() {
 
   const handleLogout = () => {
     logout();
-    return <Navigate to="/login" />;
+    window.location.href = "/login";
   }
 
 
