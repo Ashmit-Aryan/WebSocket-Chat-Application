@@ -70,7 +70,7 @@ export const useAuthStore = create((set, get) => ({
   connectSocket: () => {
     if (get().socket || !get().authUser) return;
 
-    const socket = io('/',{
+    const socket = io('http://localhost:3000',{
       withCredentials: true,
     });
 
@@ -79,7 +79,7 @@ export const useAuthStore = create((set, get) => ({
     set({ socket });
 
 
-    socket.on("getOnlineUsers", (users) => {
+    socket.on("getUserOnline", (users) => {
       set({ onlineUsers: users });
     });
   },
