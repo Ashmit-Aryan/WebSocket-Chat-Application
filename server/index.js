@@ -14,9 +14,9 @@ dotenv.config();
 const __dirname = path.resolve();
 
 const PORT = process.env.PORT || 3000;
-
+app.set("trust proxy", 1);
 app.use(express.json({ limit: "5mb" })); // req.body
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);

@@ -70,7 +70,7 @@ export const useAuthStore = create((set, get) => ({
   connectSocket: () => {
     if (get().socket || !get().authUser) return;
 
-    const socket = io(BASE_URL, {
+    const socket = io('/',{
       withCredentials: true,
     });
 
