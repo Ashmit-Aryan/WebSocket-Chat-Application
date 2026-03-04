@@ -25,6 +25,7 @@ jobs:
             cd /home/ubuntu/WebSocket-Chat-Application
             git pull origin main
             cd client
+            npm install
             npm run build
             sudo cp -r dist/* /var/www/chatapp
             sudo systemctl restart nginx
