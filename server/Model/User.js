@@ -1,31 +1,57 @@
 import mongoose, { Schema } from "mongoose";
 
-const User =mongoose.model('User', new Schema({
-     fullName: {
+const User = mongoose.model(
+  "User",
+  new Schema(
+    {
+      fullName: {
         type: String,
         default: "",
-        required: false
-    },
-    username: {
+        required: false,
+      },
+      username: {
         type: String,
         required: true,
-        unique: true
-    },
-    email: {
+        unique: true,
+      },
+      email: {
         type: String,
         required: true,
-        unique: true
-    },
-   
-    password: {
+        unique: true,
+      },
+
+      password: {
         type: String,
-        required: true
-    },
-    profilePicture: {
+        required: true,
+      },
+      profilePicture: {
         type: String,
-        default: ""
-        
-    }
-}, { timestamps: true }));
+        default: "",
+      },
+      contacts: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+
+      addContactReferences: {
+        sent: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+          },
+        ],
+        received: [
+          {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+          },
+        ],
+      },
+    },
+    { timestamps: true },
+  ),
+);
 
 export default User;
