@@ -49,15 +49,13 @@ export async function signup(req, res) {
     if (newUser) {
       const savedUser = await newUser.save();
       generateToken(savedUser._id, res);
-      res
-        .status(201)
-        .json({
-          message: "User registered successfully",
-          id: savedUser._id,
-          username: savedUser.username,
-          email: savedUser.email,
-          profilePicture: savedUser.profilePicture
-        });
+      res.status(201).json({
+        message: "User registered successfully",
+        id: savedUser._id,
+        username: savedUser.username,
+        email: savedUser.email,
+        profilePicture: savedUser.profilePicture,
+      });
     } else {
       return res.status(500).json({ message: "Failed to create user" });
     }
@@ -68,54 +66,52 @@ export async function signup(req, res) {
 }
 
 export async function login(req, res) {
+  const { email, password } = req.body;
 
-    const { email, password } = req.body;
-    
-    if (!email || !password) {
-        return res.status(400).json({ message: "Email and password are required" });
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "user does not exist" });
     }
 
-    try {
-        const user = await User.findOne({ email });
+    const isMatch = await bcrypt.compare(password, user.password);
 
-        if (!user) {
-            return res.status(400).json({ message: "user does not exist" });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-
-        if (!isMatch) {
-            return res.status(400).json({ message: "Invalid email or password" });
-        }
-
-        generateToken(user._id, res);
-        return res.json({
-            message: "Login successful",
-            id: user._id,
-            username: user.username,
-            email: user.email,
-            fullName: user.fullName,
-            profilePicture: user.profilePicture
-        });
-    } catch (error) {
-        console.error("Error logging in:", error);
-        res.status(500).json({ message: "Server error" });
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    generateToken(user._id, res);
+    return res.json({
+      message: "Login successful",
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      fullName: user.fullName,
+      profilePicture: user.profilePicture,
+    });
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 }
 
 export async function logout(req, res) {
   res.cookie("token", "", {
-    maxAge: 0
+    maxAge: 0,
   });
   res.json({ message: "Logged out successfully" });
 }
 
-
 export async function updateProfile(req, res) {
   try {
-const { profilePicture } = req.body;
-    if(!profilePicture){
+    const { profilePicture } = req.body;
+    console.log("Received profile picture:", req);
+    if (!profilePicture) {
       return res.status(400).json({ message: "Profile picture is required" });
     }
     const userId = req.user._id;
@@ -127,13 +123,13 @@ const { profilePicture } = req.body;
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { profilePicture: uploadResponse.secure_url },
-      { new: true }
+      { new: true },
     );
     res.json({
-      updatedUser
+      updatedUser,
     });
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).json({ message: "Server error" });
-  } 
+  }
 }

@@ -6,14 +6,14 @@ import {
 } from "../Controller/ContactController.js"
 
 import express from "express";
-import protectedRoute from "../Middleware/auth.middleware.js";
+import {protectedRoute} from "../Middleware/auth.middleware.js";
 import {arcjetProtection} from "../Middleware/arcjet.middleware.js";
 
 const router = express.Router();
 router.use(protectedRoute,arcjetProtection);
-router.get("/", protectedRoute, getAllContacts);
-router.post("/request/:id", protectedRoute, addContact);
-router.post("/accept/:id", protectedRoute, acceptContact);
-router.post("/reject/:id", protectedRoute, rejectContact);
+router.get("/", getAllContacts);
+router.post("/request/:id", addContact);
+router.post("/accept/:id", acceptContact);
+router.post("/reject/:id", rejectContact);
 
 export default router;
