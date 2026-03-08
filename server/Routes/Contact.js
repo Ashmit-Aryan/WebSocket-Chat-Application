@@ -7,10 +7,10 @@ import {
 
 import express from "express";
 import protectedRoute from "../Middleware/auth.middleware.js";
-
+import {arcjetProtection} from "../Middleware/arcjet.middleware.js";
 
 const router = express.Router();
-
+router.use(protectedRoute,arcjetProtection);
 router.get("/", protectedRoute, getAllContacts);
 router.post("/request/:id", protectedRoute, addContact);
 router.post("/accept/:id", protectedRoute, acceptContact);
