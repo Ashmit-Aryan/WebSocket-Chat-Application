@@ -20,7 +20,7 @@ export const useChatStore = create((set, get) => ({
   getAllContacts: async () => {
     set({ isUsersLoading: true });
     try {
-      const res = await api.get("/messages/contacts");
+      const res = await api.get("/contacts/");
       set({ allContacts: res.data });
     } catch (error) {
       toast.error(error.response.data.message);
