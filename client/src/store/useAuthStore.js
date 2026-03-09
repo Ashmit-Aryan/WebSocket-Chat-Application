@@ -30,7 +30,13 @@ export const useAuthStore = create((set, get) => ({
   updateProfile: async (data) => {
     try {
       const response = await api.post("/auth/update-profile", data);
-      set({ authUser: response.profilePicture });
+      // Preserve the full authUser object and update only the changed fields
+      set((state) => ({
+        authUser: {
+          ...state.authUser,
+          ...response.data
+        }
+      }));
       get().connectSocket();
       toast.success("Profile updated successfully!");
     } catch (error) {
