@@ -1,4 +1,4 @@
-import User from "../Model/User";
+import User from "../Model/User.js";
 
 export const addContact = async (req, res) => {
     const senderId = req.user._id;
@@ -76,8 +76,8 @@ export const rejectContact = async (req, res) => {
 export const getAllContacts = async (req, res) => {
   try {
    const user = await User.findById(req.user._id)
-    .populate("friends", "-password");
-  res.json(user.friends).status(200);
+    .populate("contacts", "-password");
+  res.json(user.contacts).status(200);
   } catch (error) {
     console.error("Error fetching contacts:", error);
     res.status(500).json({ message: "Server error" });
