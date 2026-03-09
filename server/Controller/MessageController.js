@@ -4,21 +4,9 @@ import { getReceiverSocketId, io } from "../lib/socket.js";
 import cloudinary from "../lib/cloudinary.js";
 import * as dotenv from "dotenv";
 dotenv.config();
-export const getAllContacts = async (req, res) => {
-  try {
-    const loggedInUserId = req.user._id;
-    const filteredUsers = await User.find({
-      _id: { $ne: loggedInUserId },
-    }).select("-password");
-    res.status(200).json(filteredUsers);
-  } catch (error) {
-    console.error("Error fetching contacts:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
 
 export const getMessagesByUserId = async (req, res) => {
-   try {
+  try {
     const myId = req.user._id;
     const { id: userToChatId } = req.params;
 
@@ -42,18 +30,21 @@ export const sendMessage = async (req, res) => {
     const senderId = req.user._id;
     const receiverId = req.params.id;
 
-    if(!text && !image){
-      return res.status(400).json({ message: "Message text or image is required" });
+    if (!text && !image) {
+      return res
+        .status(400)
+        .json({ message: "Message text or image is required" });
     }
-    if(senderId.equals(receiverId)){
-      return res.status(400).json({ message: "Cannot send message to yourself" });
+    if (senderId.equals(receiverId)) {
+      return res
+        .status(400)
+        .json({ message: "Cannot send message to yourself" });
     }
 
     const receiverExists = await User.exists({ _id: receiverId });
     if (!receiverExists) {
       return res.status(404).json({ message: "Receiver not found" });
     }
-
 
     let imageUrl;
     if (image) {
@@ -71,6 +62,12 @@ export const sendMessage = async (req, res) => {
       image: imageUrl,
     });
 
+    const sender = await User.findById(senderId);
+    if (!sender.contacts.includes(receiverId)) {
+      return res.status(403).json({
+        message: "You can only message friends",
+      });
+    }
     await newMessage.save();
     const receiverSocketId = getReceiverSocketId(receiverId);
     if (receiverSocketId) {
