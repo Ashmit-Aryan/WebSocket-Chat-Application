@@ -48,8 +48,8 @@ export const acceptContact = async (req, res) => {
     me.contacts.push(senderId);
     sender.contacts.push(receiverId);
 
-    me.addContactReferences.received = me.addContactReferences.received.filter(id => id.toString() !== senderId);
-    sender.addContactReferences.sent = sender.addContactReferences.sent.filter(id => id.toString() !== receiverId);
+    me.addContactReferences.received = me.addContactReferences.received.filter(id => !id.equals(senderId));
+    sender.addContactReferences.sent = sender.addContactReferences.sent.filter(id => !id.equals(receiverId));
 
     await me.save();
     await sender.save();
@@ -64,8 +64,8 @@ export const rejectContact = async (req, res) => {
     const me = await User.findById(receiverId); 
     const sender = await User.findById(senderId);
 
-    me.addContactReferences.received = me.addContactReferences.received.filter(id => id.toString() !== senderId);
-    sender.addContactReferences.sent = sender.addContactReferences.sent.filter(id => id.toString() !== receiverId);
+    me.addContactReferences.received = me.addContactReferences.received.filter(id => !id.equals(senderId));
+    sender.addContactReferences.sent = sender.addContactReferences.sent.filter(id => !id.equals(receiverId));
 
     await me.save();
     await sender.save();
