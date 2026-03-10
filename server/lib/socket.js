@@ -32,13 +32,13 @@ io.on("connection", (socket) => {
 
   io.emit("getUserOnline", Object.keys(userSocketMap));
 
-  const receiverSocketId = getReceiverSocketId(receiverId);
+  // const receiverSocketId = getReceiverSocketId(receiverId);
 
-  if (receiverSocketId) {
-    io.to(receiverSocketId).emit("friendRequest", {
-      from: senderId,
-    });
-  }
+  // if (receiverSocketId) {
+  //   io.to(receiverSocketId).emit("friendRequest", {
+  //     from: senderId,
+  //   });
+  // }
   socket.on("disconnect", () => {
     console.log(
       `Client disconnected: ${socket.id}, userId: ${socket.userId}, username: ${socket.user.username}`,
