@@ -27,6 +27,17 @@ export const useAuthStore = create((set, get) => ({
     }
   },
 
+  updateProfile: async (data) => {
+    try {
+      const response = await api.post("/auth/update-profile", data);
+      set({ authUser: { ...get().authUser, ...response.data } }); // ✅ merge, don't replace
+      get().connectSocket();
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Profile update failed");
+    }
+  },
+
   signUp: async (data)=>{
     set({ isSigningUp: true });
     try{
@@ -82,6 +93,8 @@ export const useAuthStore = create((set, get) => ({
     socket.on("getUserOnline", (users) => {
       set({ onlineUsers: users });
     });
+
+  
   },
 
    disconnectSocket: () => {
