@@ -6,11 +6,12 @@ import { useNavigate } from "react-router";
 
 function ProfileHeader() {
   // const { logout, authUser, updateProfile } = useAuthStore();
-const { logout, authUser } = useAuthStore();
+  const { logout, authUser } = useAuthStore();
   // const [selectedImg, setSelectedImg] = useState(null);
 
   // const fileInputRef = useRef(null);
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     logout();
     navigate("/login");
