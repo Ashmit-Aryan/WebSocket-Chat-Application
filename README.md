@@ -172,12 +172,6 @@ npm start
 
 ---
 
-## 📸 Screenshots
-
-*Add UI screenshots here if available.*
-
----
-
 ## 🚀 Deployment
 
 ### Backend

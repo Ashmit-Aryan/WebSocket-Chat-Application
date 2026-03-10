@@ -1,34 +1,39 @@
-import { useState, useRef } from "react";
+// import { useState, useRef } from "react";
 import { LogOutIcon } from "lucide-react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
 
 function ProfileHeader() {
-  const { logout, authUser, updateProfile } = useAuthStore();
+  // const { logout, authUser, updateProfile } = useAuthStore();
+const { logout, authUser } = useAuthStore();
+  // const [selectedImg, setSelectedImg] = useState(null);
 
-  const [selectedImg, setSelectedImg] = useState(null);
-
-  const fileInputRef = useRef(null);
-
+  // const fileInputRef = useRef(null);
+const navigate = useNavigate();
   const handleLogout = () => {
     logout();
-    window.location.href = "/login";
+    navigate("/login");
   }
 
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // const handleImageUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   if (!file) return;
 
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
 
-    reader.onloadend = async () => {
-      const base64Image = reader.result;
-      setSelectedImg(base64Image);
-      await updateProfile({ profilePic: base64Image });
-    };
-  };
+  //   reader.onloadend = async () => {
+  //     const base64Image = reader.result;
+  //     setSelectedImg(base64Image);
+  //     await updateProfile({ profilePic: base64Image });
+  //   };
+  // };
+
+  const handleProfilePage = () => {
+    navigate("/profile");
+  }
 
   return (
     <div className="p-6 border-b border-slate-700/50">
@@ -38,10 +43,10 @@ function ProfileHeader() {
           <div className="avatar online">
             <button
               className="size-14 rounded-full overflow-hidden relative group"
-              onClick={() => fileInputRef.current.click()}
+              onClick={handleProfilePage}
             >
               <img
-                src={selectedImg || authUser.profilePic || "/avatar.png"}
+                src={authUser.profilePicture || "/avatar.png"}
                 alt="User image"
                 className="size-full object-cover"
               />
@@ -50,13 +55,13 @@ function ProfileHeader() {
               </div>
             </button>
 
-            <input
+            {/* <input
               type="file"
               accept="image/*"
               ref={fileInputRef}
               onChange={handleImageUpload}
               className="hidden"
-            />
+            /> */}
           </div>
 
           {/* USERNAME & ONLINE TEXT */}

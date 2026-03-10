@@ -38,13 +38,14 @@
 - [x] Chat Page
 - [x] Contacts Page
 - [ ] Adding Contacts
-- [ ] Profile Page
+- [x] Profile Page
 
 ---
 ## Bugs
 **Backend**
 
 **Frontend**
-
+Image Upload Reloads to Login Page we need a Auth Loader
+**Deployment**
 
 ---

@@ -16,7 +16,7 @@ export const useAuthStore = create((set, get) => ({
 
   checkAuth: async () => {
     try {
-        const response = await api.get("/auth/check");
+        const response = await api.get("/auth/check",);
         set({ authUser: response.data, isCheckAuth: false });
         get().connectSocket();
     } catch (error) {
@@ -24,6 +24,17 @@ export const useAuthStore = create((set, get) => ({
         console.log("User is not authenticated", error);
     } finally {
         set({ isCheckAuth: false });
+    }
+  },
+
+  updateProfile: async (data) => {
+    try {
+      const response = await api.post("/auth/update-profile", data);
+      set({ authUser: { ...get().authUser, ...response.data } }); // ✅ merge, don't replace
+      get().connectSocket();
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Profile update failed");
     }
   },
 
@@ -70,7 +81,7 @@ export const useAuthStore = create((set, get) => ({
   connectSocket: () => {
     if (get().socket || !get().authUser) return;
 
-    const socket = io(BASE_URL, {
+    const socket = io('/',{
       withCredentials: true,
     });
 
@@ -79,9 +90,11 @@ export const useAuthStore = create((set, get) => ({
     set({ socket });
 
 
-    socket.on("getOnlineUsers", (users) => {
+    socket.on("getUserOnline", (users) => {
       set({ onlineUsers: users });
     });
+
+  
   },
 
    disconnectSocket: () => {
