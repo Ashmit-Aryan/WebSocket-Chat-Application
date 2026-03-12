@@ -73,6 +73,22 @@ export const rejectContact = async (req, res) => {
     res.status(200).json({ message: "Contact request rejected." });
 }
 
+export const removeContact = async (req, res) => {
+    const userId = req.user._id;
+    const contactId = req.params.id;
+
+    const me = await User.findById(userId);
+    const contact = await User.findById(contactId);
+
+    me.contacts = me.contacts.filter(id => !id.equals(contactId));
+    contact.contacts = contact.contacts.filter(id => !id.equals(userId));
+
+    await me.save();
+    await contact.save();
+
+    res.status(200).json({ message: "Contact removed." });
+}
+
 export const getAllContacts = async (req, res) => {
   try {
    const user = await User.findById(req.user._id)
