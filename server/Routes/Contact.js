@@ -2,7 +2,8 @@ import {
     addContact,
     acceptContact,
     rejectContact,
-    getAllContacts
+    getAllContacts,
+    removeContact
 } from "../Controller/ContactController.js"
 
 import express from "express";
@@ -15,5 +16,6 @@ router.get("/", getAllContacts);
 router.post("/request/:id", addContact);
 router.post("/accept/:id", acceptContact);
 router.post("/reject/:id", rejectContact);
+router.post("/remove/:id", removeContact);
 
 export default router;
